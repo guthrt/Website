@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Academic on Academic</title>
+    <link>/</link>
+    <description>Recent content in Academic on Academic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Sun, 15 Oct 2017 00:00:00 -0700</lastBuildDate>
+    <atom:link href="/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Emotional Modulation of Memory</title>
+      <link>/publication/emotion-memory/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 -0700</pubDate>
+      
+      <guid>/publication/emotion-memory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Exploring the self</title>
+      <link>/talk/example-talk/</link>
+      <pubDate>Sun, 01 Jan 2017 00:00:00 -0800</pubDate>
+      
+      <guid>/talk/example-talk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Science Class</title>
+      <link>/project/data-science-class/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0700</pubDate>
+      
+      <guid>/project/data-science-class/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Emotion and Memory</title>
+      <link>/project/emotion-memory/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0700</pubDate>
+      
+      <guid>/project/emotion-memory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web Scraping Workshop Introduction</title>
+      <link>/post/web_scraping_presentation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/web_scraping_presentation/</guid>
+      <description>&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This presentation is designed to give a cursory overview of the methods involved in extracting data from the web. Web scraping, also known as web crawling or web harvesting, is a technique used to obtain information from a website that is not available in a downloadable form. This is a topic that is unlike any that we have covered so far it in that it requires the use of tools outside of R and R studio and also requires a cursory knowledge of how information on the web is stored. In order to access the text or images of a website, we must dig through the underlying html code that serves as the scaffold of the website and pull out the bits and pieces that we need.&lt;/p&gt;
+&lt;p&gt;We will first explore the tools included in the ‘rvest’ package that will allow us to navigate the messy structure of the web. This will be followed by a surface level tutorial of how html code is structured and discuss the ways in which we can use tools such as developer tools, search functions, and web browser extensions to navigate through the code and find what we need. We will then go through two working examples that show different perspectives and techniques that can both achieve similar results.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;disclaimer&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Disclaimer!&lt;/h1&gt;
+&lt;p&gt;Some websites don’t approve of web scraping and have systems in place that identify the difference between a user accessing the website through a point and click interface and a program that is designed to access the page solely to pull information from it. Facebook for example has been known to ban people from using facebook for scraping data. Google also has safeguards in place to prevent scraping as well. Make sure you research the guidelines that are in place for a particular site before trying to extract data from it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rvest&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;rvest&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;html(x)&lt;/code&gt; or &lt;code&gt;read_html(x)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Takes a url as its input and parses the html code that is associated with that site. Note that &lt;code&gt;html()&lt;/code&gt; is deprecated.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;html_nodes(x, css, xpath)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Turns each HTML tag into a row in an R dataframe. Takes parsed html code as an input and requires either a css selector or an xpath as an argument. This is how you tell R what you want to pull from the website that you have identified with html() or read_html(). Css selectors will be explained below and xpath will not be explained here because it is used for xml.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;html_text(x)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Takes a HTML tags, derived from html_nodes(), as a parameter and extracts text from the corresponding tag(s).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Store web url
+library(rvest)
+kingdom &amp;lt;- read_html(&amp;quot;http://www.imdb.com/title/tt0320661/&amp;quot;)
+
+#Scrape the website for the movie rating
+rating &amp;lt;- kingdom %&amp;gt;% 
+  html_nodes(&amp;quot;strong span&amp;quot;) %&amp;gt;%
+  html_text() 
+rating&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;7.2&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;html_attrs()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Takes a node or nodes as a parameter and extracts the attributes from them. Can be useful for debugging.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#html_attrs() instead of html_text()
+rating &amp;lt;- kingdom %&amp;gt;% 
+  html_nodes(&amp;quot;strong span&amp;quot;) %&amp;gt;%
+  html_attrs() 
+rating&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [[1]]
+##      itemprop 
+## &amp;quot;ratingValue&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;html_session()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Alternative to using html() or read_html(). This function essentially opens a live browser session that allows you to do things such as “clicking buttons” and using the back page and forward page options like you would if you were were actually browsing the internet.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;follow_link()&lt;/code&gt; &lt;code&gt;jump_to()&lt;/code&gt; &lt;code&gt;back()&lt;/code&gt; &lt;code&gt;forward()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;html_table()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Scrape whole HTML tables of data as a dataframe&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;s &amp;lt;- html_session(&amp;quot;http://hadley.nz&amp;quot;)
+s %&amp;gt;% jump_to(&amp;quot;hadley-wickham.jpg&amp;quot;) %&amp;gt;% back() %&amp;gt;% session_history()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## - http://hadley.nz/
+##   http://hadley.nz/hadley-wickham.jpg&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;s %&amp;gt;% follow_link(css = &amp;quot;p a&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;lt;session&amp;gt; https://www.rstudio.com/
+##   Status: 200
+##   Type:   text/html; charset=UTF-8
+##   Size:   654651&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;html-and-css-selectors&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;HTML and CSS selectors&lt;/h1&gt;
+&lt;p&gt;A css selector is a tag that is used to identify the information within the html code that you need. You rarely want to just pull one number or bit of text from a site or else you would just copy and paste it. The data that you want is often structured in repetitive ways through the use of “tags” and “class” identifiers (to name a few) that allow you to pull all data that has certain qualities in common.&lt;/p&gt;
+&lt;p&gt;This is a website that is highly recommended by Hadley Wickham for understanding how css selectors work.&lt;/p&gt;
+&lt;p&gt;flukeout.github.io (demo)&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://selectorgadget.com/&#34;&gt;Selector Gadget&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The developer tools in the Google Chrome browser can also be incredibly helpful to identify relevant CSS tags.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;scraping-sports-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Scraping Sports Data&lt;/h1&gt;
+&lt;p&gt;Sports data is a good proof of concept because there are lots of numbers to work with. We will start with week 1 of the regular season and scrape all of the NFL teams that played that week and then also pull the total and quarter scores for each of those teams. Using a for loop we will navigate page by page through each week of the season until we have the teams and scores for the entire season. The data will then take a bit of wrangling to get it into a usable form so we can perform some simple descriptive statistics on it.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Load packages
+library(rvest)
+library(tidyverse)
+
+#Establish the session with the url for the first page  
+link &amp;lt;- html_session(&amp;quot;http://www.nfl.com/scores/2017/REG1&amp;quot;)
+
+#create an iteration variable that represents the amount of pages you will need to access
+num_weeks &amp;lt;- 17
+
+#each week has a different amount of games and so I make empty lists to put the dataframes in for each page
+#I have one for the teams and total scores and one for the teams and the quarter scores 
+#It makes it easier to wrangle later on to do these separate 
+dfs1 &amp;lt;- list()
+dfs2 &amp;lt;- list()
+
+#Create a for loop to iterate through each page and to collect the data on each that you need
+for (i in 1:num_weeks) { 
+  
+  #collect all of the team names for each week
+  team &amp;lt;- link  %&amp;gt;% 
+    #identify the css selector that selects all team names
+    html_nodes(&amp;quot;.team-name&amp;quot;) %&amp;gt;%  
+    #parse the html into a usable form
+    html_text()
+  
+  #collect all of the total scores for each week
+  score &amp;lt;- link %&amp;gt;% 
+    #identify the css selector that selects all total scores
+    html_nodes(&amp;quot;.team-data .total-score&amp;quot;) %&amp;gt;%  
+    html_text() %&amp;gt;% 
+    as.numeric()
+  
+  #collect the scores for each quarter for each game for each week 
+  q1 &amp;lt;- link %&amp;gt;% 
+    html_nodes(&amp;quot;.first-qt&amp;quot;) %&amp;gt;% 
+    html_text() %&amp;gt;% 
+    as.numeric
+
+  q2 &amp;lt;- link %&amp;gt;% 
+    html_nodes(&amp;quot;.second-qt&amp;quot;) %&amp;gt;% 
+    html_text() %&amp;gt;% 
+    as.numeric
+
+  q3 &amp;lt;- link %&amp;gt;% 
+    html_nodes(&amp;quot;.third-qt&amp;quot;) %&amp;gt;% 
+    html_text() %&amp;gt;% 
+    as.numeric
+
+  q4 &amp;lt;- link %&amp;gt;% 
+    html_nodes(&amp;quot;.fourth-qt&amp;quot;) %&amp;gt;% 
+    html_text() %&amp;gt;% 
+    as.numeric
+  
+  #Create a dataframe that binds togther the team and the total score for each week
+  x &amp;lt;- as.data.frame(cbind(team, score))
+  #This allows you to keep the teams variable the same in each dataframe while creating a variable that identifies which week the score came from
+  colnames(x) &amp;lt;- c(&amp;quot;teams&amp;quot;, paste(&amp;quot;scores_week&amp;quot;, i, sep = &amp;quot;_&amp;quot;))
+  
+  #Same thing for a dataframe that combines teams and the quarter scores for each week
+  y &amp;lt;- as.data.frame(cbind(team, q1, q2, q3, q4))
+  #The &amp;quot;_&amp;quot; after the q is very helpful later on
+  colnames(y) &amp;lt;- c(&amp;quot;teams&amp;quot;, paste(&amp;quot;q_1_week&amp;quot;, i, sep = &amp;quot;_&amp;quot;), paste(&amp;quot;q_2_week&amp;quot;, i, sep = &amp;quot;_&amp;quot;), paste(&amp;quot;q_3_week&amp;quot;, i, sep = &amp;quot;_&amp;quot;), paste(&amp;quot;q_4_week&amp;quot;, i, sep = &amp;quot;_&amp;quot;))
+  
+  #assign a name to each dataframe that specifies which week it came from 
+  dfs1[[i]] &amp;lt;- x
+  dfs2[[i]] &amp;lt;- y
+  
+  #specify which page to stop on
+  if (i &amp;lt; num_weeks) {
+    #follow the link for the next page with the approprite css selector 
+    link &amp;lt;- link %&amp;gt;%
+      follow_link(css = &amp;quot;.active-week+ li .week-item&amp;quot;)
+  }
+}
+
+#join all of the dataframes based on team name
+total &amp;lt;- left_join(dfs1[[1]], dfs1[[2]])
+
+for (i in 3:num_weeks) {
+  total &amp;lt;- left_join(total, dfs1[[i]])
+}
+
+quarters &amp;lt;- left_join(dfs2[[1]], dfs2[[2]])
+
+for (i in 3:num_weeks) {
+  quarters &amp;lt;- left_join(quarters, dfs2[[i]])
+}
+
+
+#put the dataframe into long format
+total_tidy &amp;lt;- total %&amp;gt;% 
+  gather(week, score, -1) %&amp;gt;% 
+  #split up the week variable so that all you have is a number
+  separate(week, c(&amp;quot;dis&amp;quot;, &amp;quot;dis2&amp;quot;, &amp;quot;week&amp;quot;), sep = &amp;quot;_&amp;quot;) %&amp;gt;% 
+  select(-starts_with(&amp;quot;dis&amp;quot;))
+
+#do the same for the quarter score dataframes 
+q_tidy &amp;lt;- quarters %&amp;gt;%
+  gather(q, q_score, -1) %&amp;gt;% 
+  #this is why the &amp;quot;_&amp;quot; after the q earlier was important 
+  separate(q, c(&amp;quot;dis&amp;quot;, &amp;quot;quarter&amp;quot;, &amp;quot;dis2&amp;quot;, &amp;quot;week&amp;quot;), sep = &amp;quot;_&amp;quot;) %&amp;gt;% 
+  select(-starts_with(&amp;quot;dis&amp;quot;))
+
+#join the total and quarter dataframes
+full_tidy &amp;lt;- left_join(total_tidy, q_tidy)
+
+full_tidy$score &amp;lt;- as.numeric(full_tidy$score)
+full_tidy$q_score &amp;lt;- as.numeric(full_tidy$q_score)
+
+week &amp;lt;- full_tidy %&amp;gt;% 
+  group_by(week) %&amp;gt;% 
+  summarise(mean = mean(score, na.rm = TRUE))
+
+team_score &amp;lt;- full_tidy %&amp;gt;% 
+  group_by(teams) %&amp;gt;% 
+  summarise(mean = mean(score, na.rm = TRUE))
+
+q_score &amp;lt;- full_tidy %&amp;gt;% 
+  group_by(teams, quarter) %&amp;gt;% 
+  summarise(mean = mean(q_score, na.rm = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;minihacks&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Minihacks&lt;/h1&gt;
+&lt;div id=&#34;minihack-1&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Minihack 1&lt;/h2&gt;
+&lt;p&gt;Navigate to the nfl page that was used in the first example and pull the big plays count for each game. Once you have all of the data, report the mean and the standard deviation. *If you are feeling ambitious, create a for loop that does this for each week of the season and store each mean and sd in a list.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;minihack-2&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Minihack 2&lt;/h2&gt;
+&lt;p&gt;Go back to the TrustPilot website and look at the reviews. You’ll notice that there is information on each review about the number of reviews the author has posted on the website (Ex: Joey Perry, 4 reviews). Write a function that, for a given webpage, gets the number of reviews each reviewer has made.&lt;/p&gt;
+&lt;p&gt;If you are having trouble finding the corresponding CSS tag, ask a classmate! Note as well that only pulling the number of other reviews will involve some text manipulation to get rid of irrelevant text.&lt;/p&gt;
+&lt;p&gt;At the end you should have a function that takes an html object as a parameter and returns a numeric vector of length 20.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;minihack-3&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Minihack 3&lt;/h2&gt;
+&lt;p&gt;The web is a vast ocean of data that is waiting to be scraped. For this hack, be creative. Find a website of your choice and pull some data that you find interesting. Tidy your data and print the head of your dataframe. Perform some simple descriptive statistics and if you’re feeling ambitious create at least one visualization of the trends that you have discovered. There are no limitations to what kind of data you decide to pull (but don’t forget our initial disclaimer!). It can be numbers and it can also be text if you decide that you want to use the skills from the text processing lesson that we covered last week.&lt;/p&gt;
+&lt;p&gt;If you don’t know where to start, scraping from imdb.com, espn.go.com, news sites, bestplaces.net, is sufficient.&lt;/p&gt;
+&lt;p&gt;Helpful Sources:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/&#34;&gt;Hadley Wickham’s rvest&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rpubs.com/ryanthomas/webscraping-with-rvest&#34;&gt;RPubs Web Scraping Tutorial&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html&#34;&gt;CRAN Selectorgadget&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

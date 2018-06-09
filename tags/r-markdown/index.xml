@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R Markdown on Academic</title>
+    <link>/tags/r-markdown/</link>
+    <description>Recent content in R Markdown on Academic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    
+	<atom:link href="/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Web Scraping Workshop Introduction</title>
+      <link>/post/web_scraping_presentation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/web_scraping_presentation/</guid>
+      <description>IntroductionThis presentation is designed to give a cursory overview of the methods involved in extracting data from the web. Web scraping, also known as web crawling or web harvesting, is a technique used to obtain information from a website that is not available in a downloadable form. This is a topic that is unlike any that we have covered so far it in that it requires the use of tools outside of R and R studio and also requires a cursory knowledge of how information on the web is stored.</description>
+    </item>
+    
+  </channel>
+</rss>
